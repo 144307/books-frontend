@@ -13,11 +13,7 @@ export default function BookCard({
 }: BookCardProps) {
   return (
     <div className="flex w-56 flex-col overflow-hidden rounded-lg border border-stone-300 bg-[#faf8f5]">
-      <img
-        src={coverUrl}
-        alt={title}
-        className="aspect-[2/3] w-full object-cover"
-      />
+      <img src={coverUrl} alt={title} />
 
       <div className="flex flex-1 flex-col gap-4 p-5">
         <h3 className="line-clamp-2 font-['Libre_Baskerville'] text-[15px] font-normal leading-relaxed tracking-wide text-stone-800">

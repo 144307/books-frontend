@@ -3,4 +3,5 @@ export interface IBookContext {
   coverURL: string;
   buyURL: string;
   sampleURL: string;
+  featured: boolean; // only one can be present
 }

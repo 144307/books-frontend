@@ -5,16 +5,20 @@ import BookCard from "../BookCard/BookCard";
 function BookDisplay() {
   const books: Array<IBookContext> = useBookContext();
   return (
-    <div className="flex flex-wrap items-start gap-6 p-10">
-      {books.map((book) => (
-        <BookCard
-          title={book.title}
-          coverUrl={book.coverURL}
-          onBuy={() => {}}
-          onSample={() => {}}
-        ></BookCard>
-      ))}
-    </div>
+    <section className="w-full flex place-content-center">
+      <div className="max-w-6xl w-full flex place-content-center pt-10 pb-10">
+        <div className="flex flex-wrap place-content-between gap-6 max-w-6xl w-full p-4">
+          {books.map((book) => (
+            <BookCard
+              title={book.title}
+              coverUrl={book.coverURL}
+              onBuy={() => {}}
+              onSample={() => {}}
+            ></BookCard>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 

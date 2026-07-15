@@ -4,10 +4,32 @@ import BookContext from "./BookContext";
 
 const defaultBooks: Array<IBookContext> = [
   {
-    title: "test",
-    coverURL: "https://placehold.co/400x600/1a1a2e/eee?text=Gatsby",
+    title: "The Silent Library",
+    coverURL: "https://placehold.co/200x300/1a1a2e/eee?text=Silent+Library",
     buyURL: "",
     sampleURL: "",
+    featured: true,
+  },
+  {
+    title: "Whispers of the Forgotten",
+    coverURL: "https://placehold.co/200x300/4a2c2a/f5e6d3?text=Whispers",
+    buyURL: "",
+    sampleURL: "",
+    featured: false,
+  },
+  {
+    title: "Echoes from the Attic",
+    coverURL: "https://placehold.co/200x300/1b3b36/cde8e0?text=Echoes",
+    buyURL: "",
+    sampleURL: "",
+    featured: false,
+  },
+  {
+    title: "The Midnight Archive",
+    coverURL: "https://placehold.co/200x300/2d2d4e/e0d8f0?text=Midnight",
+    buyURL: "",
+    sampleURL: "",
+    featured: false,
   },
 ];
 
