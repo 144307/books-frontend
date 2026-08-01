@@ -12,7 +12,7 @@ export default function DisplayCard({
   onSample,
 }: DisplayCardProps) {
   return (
-    <div className="relative z-10 flex w-80 flex-col overflow-hidden rounded-xl border border-stone-300 bg-[#faf8f5] shadow-lg">
+    <div className="flex w-80 flex-col overflow-hidden rounded-xl border border-stone-300 bg-[#faf8f5] shadow-lg">
       <img src={coverUrl} alt={title} />
 
       <div className="flex flex-1 flex-col gap-6 p-8">

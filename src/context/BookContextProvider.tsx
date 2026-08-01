@@ -36,7 +36,7 @@ const defaultBooks: Array<IBookContext> = [
 function fetchBasicData() {}
 
 function BookContextProvider({ children }: { children: React.ReactNode }) {
-  const [bookData, setBookData] = useState(defaultBooks);
+  const [bookData] = useState(defaultBooks);
 
   useEffect(() => {
     fetchBasicData();

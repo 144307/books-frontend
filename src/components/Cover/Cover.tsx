@@ -1,8 +1,11 @@
 import useBookContext from "../../context/useBookContext";
 import coverBackground from "../../assets/ChatGPT Image 12 июл. 2026 г., 17_38_13.png";
 import DisplayCard from "../DisplayCard/DisplayCard";
+import { useNavigate } from "react-router";
 
 function Cover() {
+  const testId = "1";
+  const navigate = useNavigate();
   const featuredBook = useBookContext().find((e) => e.featured);
   if (!featuredBook) {
     return <div>No featured book</div>;
@@ -38,7 +41,7 @@ function Cover() {
           title={featuredBook.title}
           coverUrl={featuredBook.coverURL}
           onBuy={() => {}}
-          onSample={() => {}}
+          onSample={() => navigate(`/books/${testId}`)}
         ></DisplayCard>
       </div>
       <svg

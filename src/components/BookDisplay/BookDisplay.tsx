@@ -10,6 +10,7 @@ function BookDisplay() {
         <div className="flex flex-wrap place-content-between gap-6 max-w-6xl w-full p-4">
           {books.map((book) => (
             <BookCard
+              key={book.title}
               title={book.title}
               coverUrl={book.coverURL}
               onBuy={() => {}}

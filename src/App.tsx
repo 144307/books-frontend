@@ -1,15 +1,16 @@
 import "./App.css";
-import BookDisplay from "./components/BookDisplay/BookDisplay";
-import Cover from "./components/Cover/Cover";
-import Header from "./components/Header/Header";
+import { Route, Routes } from "react-router";
+import Home from "./pages/Home";
+import Fragment from "./pages/Fragment";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <div>
-      <Header></Header>
-      <Cover></Cover>
-      <BookDisplay></BookDisplay>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/books/:id" element={<Fragment />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
