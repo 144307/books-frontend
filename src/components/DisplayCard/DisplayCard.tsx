@@ -13,7 +13,11 @@ export default function DisplayCard({
 }: DisplayCardProps) {
   return (
     <div className="flex w-80 flex-col overflow-hidden rounded-xl border border-stone-300 bg-[#faf8f5] shadow-lg">
-      <img src={coverUrl} alt={title} />
+      {coverUrl ? (
+        <img src={coverUrl} alt={`missing image for ${title}`} />
+      ) : (
+        <div>error</div>
+      )}
 
       <div className="flex flex-1 flex-col gap-6 p-8">
         <h3 className="line-clamp-3 font-['Libre_Baskerville'] text-2xl font-normal leading-relaxed tracking-wide text-stone-800">

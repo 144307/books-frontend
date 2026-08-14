@@ -1,34 +1,38 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
 import Header from "../components/Header/Header";
-
-type State =
-  | { type: "loading" }
-  | { type: "success"; fragment: string }
-  | { type: "error"; message: string };
+import useBookContext from "../context/useBookContext";
+import { useEffect } from "react";
 
 function Fragment() {
-  const { id } = useParams();
-  const [state, setState] = useState<State>({ type: "loading" });
+  const navigate = useNavigate();
+  const rawBookID = useParams()["bookID"];
+  const bookID = Number.parseInt(!rawBookID ? "-1" : rawBookID);
+  const rawFragmentID = useParams()["fragmentID"];
+  const fragmentID = Number.parseInt(!rawFragmentID ? "1" : rawFragmentID);
+  const context = useBookContext();
 
   useEffect(() => {
-    const API = import.meta.env.VITE_API_BASE_URL ?? "";
-    fetch(`${API}/api/books/${id}/fragment`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data) => {
-        if (typeof data?.fragment !== "string") {
-          throw new Error("Bad response shape");
-        }
-        setState({ type: "success", fragment: data.fragment });
-      })
-      .catch((e) => setState({ type: "error", message: e.message }));
-  }, [id]);
+    console.log(context.books);
+    if (context.books) {
+      switch (fragmentID) {
+        case 1:
+          console.log("TEST", context.books[bookID].chapter_1);
+          break;
+      }
+    }
+  }, [context.books, context.isLoading]);
 
-  if (state.type === "loading")
+  function hasNext(fragmentID: number): boolean {
+    if (fragmentID < context.books.length) {
+      if (context.books[fragmentID + 1] !== null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  if (context.isLoading)
     return (
       <div className="min-h-screen bg-[#f4ecd8]">
         <Header />
@@ -38,12 +42,12 @@ function Fragment() {
       </div>
     );
 
-  if (state.type === "error")
+  if (context.error)
     return (
       <div className="min-h-screen bg-[#f4ecd8]">
         <Header />
         <div className="mx-auto max-w-2xl px-6 py-16 text-center text-amber-900">
-          Book not found. ({state.message})
+          Book not found. ({context.error})
         </div>
       </div>
     );
@@ -51,14 +55,63 @@ function Fragment() {
   return (
     <div className="min-h-screen bg-[#f4ecd8]">
       <Header />
-      <article className="mx-auto max-w-2xl px-6 py-16">
+      {context.isLoading === false && (
+        <div className="mx-auto flex w-[54rem] max-w-full justify-center gap-3 px-6 pt-8">
+          <button
+            type="button"
+            disabled={hasNext(fragmentID)} // TODO replace with hasPrev
+            onClick={() =>
+              navigate(`/books/${bookID}/fragment/${fragmentID - 1}`)
+            }
+            className="cursor-pointer rounded-lg border border-stone-400 bg-stone-700 px-5 py-3 text-sm font-medium uppercase tracking-widest text-stone-100 enabled:hover:bg-stone-600 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Previous Fragment
+          </button>
+          <button
+            type="button"
+            disabled={hasNext(fragmentID)}
+            onClick={() =>
+              navigate(`/books/${bookID}/fragment/${fragmentID + 1}`)
+            }
+            className="cursor-pointer rounded-lg border border-stone-400 bg-stone-700 px-5 py-3 text-sm font-medium uppercase tracking-widest text-stone-100 enabled:hover:bg-stone-600 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Next Fragment
+          </button>
+        </div>
+      )}
+      <article className="mx-auto w-[54rem] max-w-full px-6 py-16">
         <span className="block text-sm font-medium uppercase tracking-[0.3em] text-amber-800">
           Book Fragment
         </span>
-        <div className="prose prose-stone mt-8 max-w-none font-['Libre_Baskerville'] text-lg leading-loose">
-          <ReactMarkdown>{state.fragment}</ReactMarkdown>
+        <div className="prose prose-stone prose-p:my-4 prose-p:text-justify mt-8 max-w-none font-['Libre_Baskerville'] text-lg leading-normal">
+          <ReactMarkdown>Test Fragment</ReactMarkdown>
         </div>
       </article>
+
+      {/* {state.type === "success" && (
+        <div className="mx-auto flex w-[54rem] max-w-full justify-center gap-3 px-6 pt-8">
+          <button
+            type="button"
+            disabled={hasNext(fragmentID)} // TODO replace with hasPrev
+            onClick={() =>
+              navigate(`/books/${bookID}/fragment/${fragmentID - 1}`)
+            }
+            className="cursor-pointer rounded-lg border border-stone-400 bg-stone-700 px-5 py-3 text-sm font-medium uppercase tracking-widest text-stone-100 enabled:hover:bg-stone-600 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Previous Fragment
+          </button>
+          <button
+            type="button"
+            disabled={hasNext(fragmentID)}
+            onClick={() =>
+              navigate(`/books/${bookID}/fragment/${fragmentID + 1}`)
+            }
+            className="cursor-pointer rounded-lg border border-stone-400 bg-stone-700 px-5 py-3 text-sm font-medium uppercase tracking-widest text-stone-100 enabled:hover:bg-stone-600 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Next Fragment
+          </button>
+        </div>
+      )} */}
     </div>
   );
 }

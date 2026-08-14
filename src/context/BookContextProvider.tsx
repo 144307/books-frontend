@@ -1,48 +1,46 @@
 import { useEffect, useState } from "react";
-import type { IBookContext } from "../types";
+import type { BookContextState, ClientBook } from "../types";
 import BookContext from "./BookContext";
 
-const defaultBooks: Array<IBookContext> = [
-  {
-    title: "The Silent Library",
-    coverURL: "https://placehold.co/200x300/1a1a2e/eee?text=Silent+Library",
-    buyURL: "",
-    sampleURL: "",
-    featured: true,
-  },
-  {
-    title: "Whispers of the Forgotten",
-    coverURL: "https://placehold.co/200x300/4a2c2a/f5e6d3?text=Whispers",
-    buyURL: "",
-    sampleURL: "",
-    featured: false,
-  },
-  {
-    title: "Echoes from the Attic",
-    coverURL: "https://placehold.co/200x300/1b3b36/cde8e0?text=Echoes",
-    buyURL: "",
-    sampleURL: "",
-    featured: false,
-  },
-  {
-    title: "The Midnight Archive",
-    coverURL: "https://placehold.co/200x300/2d2d4e/e0d8f0?text=Midnight",
-    buyURL: "",
-    sampleURL: "",
-    featured: false,
-  },
-];
-
-function fetchBasicData() {}
-
 function BookContextProvider({ children }: { children: React.ReactNode }) {
-  const [bookData] = useState(defaultBooks);
+  const [state, setState] = useState<BookContextState>({
+    books: [],
+    isLoading: true,
+    error: null,
+  });
 
   useEffect(() => {
-    fetchBasicData();
+    console.log(state);
+  }, [state]);
+
+  useEffect(() => {
+    const API = import.meta.env.VITE_API_BASE_URL ?? "";
+    fetch(`${API}/api/database`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data: unknown) => {
+        if (
+          typeof data !== "object" ||
+          data === null ||
+          !Array.isArray((data as { books?: unknown }).books)
+        ) {
+          throw new Error("Bad response shape");
+        }
+        setState({
+          books: (data as { books: ClientBook[] }).books,
+          isLoading: false,
+          error: null,
+        });
+      })
+      .catch((e) => {
+        console.error(e.message);
+        setState({ books: [], isLoading: false, error: e.message });
+      });
   }, []);
 
-  return <BookContext value={bookData}>{children}</BookContext>;
+  return <BookContext value={state}>{children}</BookContext>;
 }
 
 export default BookContextProvider;

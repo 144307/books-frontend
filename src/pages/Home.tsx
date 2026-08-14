@@ -1,13 +1,15 @@
-import BookDisplay from "../components/BookDisplay/BookDisplay";
+import useBookContext from "../context/useBookContext";
 import Cover from "../components/Cover/Cover";
 import Header from "../components/Header/Header";
 
 function Home() {
+  const { books } = useBookContext();
   return (
     <>
       <Header></Header>
-      <Cover></Cover>
-      <BookDisplay></BookDisplay>
+      {books.map((book) => (
+        <Cover bookId={book.id} key={book.id}></Cover>
+      ))}
     </>
   );
 }

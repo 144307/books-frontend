@@ -1,4 +1,3 @@
-import "./App.css";
 import { Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import Fragment from "./pages/Fragment";
@@ -8,7 +7,10 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/books/:id" element={<Fragment />} />
+      <Route
+        path="/books/:bookID/fragment/:fragmentID?"
+        element={<Fragment />}
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

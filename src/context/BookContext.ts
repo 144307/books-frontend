@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import type { IBookContext } from "../types";
+import type { BookContextState } from "../types";
 
-const BookContext = createContext<Array<IBookContext> | undefined>(undefined);
+const BookContext = createContext<BookContextState | undefined>(undefined);
 
 export default BookContext;
