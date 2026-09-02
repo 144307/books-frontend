@@ -7,8 +7,13 @@ function Home() {
   return (
     <>
       <Header></Header>
-      {books.map((book) => (
-        <Cover bookId={book.id} key={book.id}></Cover>
+      {books.map((book, index) => (
+        <Cover
+          bookId={book.id}
+          hasTopWave={index > 0}
+          hasNext={index < books.length - 1}
+          key={book.id}
+        ></Cover>
       ))}
     </>
   );

@@ -1,8 +1,8 @@
 function Header() {
   return (
-    <header>
-      <div>Книги</div>
-      <div>Blog</div>
+    <header className="absolute top-0 w-full h-10 bg-white flex gap-2 pl-4 pr-4 z-1">
+      <div className="h-full place-content-center text-black">Книги</div>
+      <div className="h-full place-content-center text-black">Blog</div>
     </header>
   );
 }

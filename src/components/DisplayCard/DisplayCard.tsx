@@ -12,7 +12,7 @@ export default function DisplayCard({
   onSample,
 }: DisplayCardProps) {
   return (
-    <div className="flex w-80 flex-col overflow-hidden rounded-xl border border-stone-300 bg-[#faf8f5] shadow-lg">
+    <div className="flex w-80 flex-col overflow-hidden rounded-xl border border-stone-300 bg-[#faf8f5] shadow-lg scale-80">
       {coverUrl ? (
         <img src={coverUrl} alt={`missing image for ${title}`} />
       ) : (
@@ -20,7 +20,7 @@ export default function DisplayCard({
       )}
 
       <div className="flex flex-1 flex-col gap-6 p-8">
-        <h3 className="line-clamp-3 font-['Libre_Baskerville'] text-2xl font-normal leading-relaxed tracking-wide text-stone-800">
+        <h3 className="line-clamp-3 font-book text-2xl font-normal leading-relaxed tracking-wide text-stone-800">
           {title}
         </h3>
 

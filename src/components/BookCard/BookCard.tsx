@@ -16,7 +16,7 @@ export default function BookCard({
       <img src={coverUrl} alt={title} />
 
       <div className="flex flex-1 flex-col gap-4 p-5">
-        <h3 className="line-clamp-2 font-['Libre_Baskerville'] text-[15px] font-normal leading-relaxed tracking-wide text-stone-800">
+        <h3 className="line-clamp-2 font-book text-[15px] font-normal leading-relaxed tracking-wide text-stone-800">
           {title}
         </h3>
 
