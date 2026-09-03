@@ -67,7 +67,7 @@ function Fragment() {
   return (
     <div className="pt-10 min-h-screen bg-[#f4ecd8]">
       <Header />
-      <div className="mx-auto flex w-[54rem] max-w-full justify-center gap-3 px-6 pt-8">
+      <div className="mx-auto flex w-216 max-w-full justify-center gap-3 px-6 pt-8">
         <button
           type="button"
           disabled={!hasPrev}
@@ -89,7 +89,7 @@ function Fragment() {
           Next Fragment
         </button>
       </div>
-      <article className="mx-auto w-[54rem] max-w-full px-6 py-16">
+      <article className="mx-auto w-216 max-w-full px-6 py-16">
         <span className="block text-sm font-medium uppercase tracking-[0.3em] text-amber-800">
           Book Fragment
         </span>

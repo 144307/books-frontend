@@ -10,10 +10,6 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    console.log(state);
-  }, [state]);
-
-  useEffect(() => {
     const API = import.meta.env.VITE_API_BASE_URL ?? "";
     fetch(`${API}/api/database`)
       .then((res) => {
