@@ -1,5 +1,7 @@
 import useBookContext from "../context/useBookContext";
-import Cover from "../components/Cover/Cover";
+import Banner from "../components/Banner/Banner";
+import CardsSection from "../components/CardsSection/CardsSection";
+import Gallery from "../components/Gallery/Gallery";
 import Header from "../components/Header/Header";
 
 function Home() {
@@ -28,14 +30,16 @@ function Home() {
   return (
     <>
       <Header></Header>
-      {books.map((book, index) => (
-        <Cover
-          book={book}
-          hasTopWave={index > 0}
-          hasNext={index < books.length - 1}
-          key={book.id}
-        ></Cover>
-      ))}
+      <Banner
+        title="Имя автора"
+        subtitle="A journey through the forgotten pages of history"
+      ></Banner>
+      {books.length > 0 && (
+        <>
+          <CardsSection books={books}></CardsSection>
+          <Gallery></Gallery>
+        </>
+      )}
     </>
   );
 }

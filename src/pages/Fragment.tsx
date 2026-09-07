@@ -91,7 +91,7 @@ function Fragment() {
       </div>
       <article className="mx-auto w-216 max-w-full px-6 py-16">
         <span className="block text-sm font-medium uppercase tracking-[0.3em] text-amber-800">
-          Book Fragment
+          {book.book_name}
         </span>
         <div className="prose prose-stone prose-p:my-4 prose-p:text-justify mt-8 max-w-none font-book text-lg leading-normal">
           <ReactMarkdown>{chapter}</ReactMarkdown>

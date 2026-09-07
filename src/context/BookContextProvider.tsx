@@ -24,6 +24,7 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
         ) {
           throw new Error("Bad response shape");
         }
+        console.log("data", data);
         setState({
           books: (data as { books: ClientBook[] }).books,
           isLoading: false,
