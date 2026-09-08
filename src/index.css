@@ -16,6 +16,12 @@
   --font-book: "Libre Baskerville", "Libre Baskerville Fallback", serif;
 }
 
+@utility page-width {
+  margin-inline: auto;
+  width: 54rem;
+  max-width: 100%;
+}
+
 .wave-top {
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%201000'%20preserveAspectRatio='none'%3E%3Cpath%20fill='%23fff'%20d='M0%201000H1440V80C1380%2060%201260%2040%201080%2080C720%20160%20360%20-20%200%2080Z'/%3E%3C/svg%3E");
   -webkit-mask-size: 100% 100%;

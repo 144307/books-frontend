@@ -1,41 +1,66 @@
+import { useNavigate } from "react-router";
+import type { ClientBook } from "../../types";
+
 interface BookCardProps {
-  title: string;
-  coverUrl: string;
-  onBuy?: () => void;
-  onSample?: () => void;
+  book: ClientBook;
 }
 
-export default function BookCard({ title, coverUrl, onBuy, onSample }: BookCardProps) {
+function BookCard({ book }: BookCardProps) {
+  const navigate = useNavigate();
+
+  //   const openBook = () => navigate(`/books/${book.id}`);
+
   return (
-    <div className="flex w-56 flex-col overflow-hidden rounded-lg border border-stone-300 bg-[#faf8f5]">
+    <article className="flex h-100 w-full cursor-pointer items-stretch gap-5">
       <img
-        src={coverUrl}
-        alt={title}
-        className="aspect-[2/3] w-full object-cover"
+        src={book.cover_url}
+        alt={`Cover of ${book.book_name}`}
+        className="h-full w-65 shrink-0 rounded-sm object-cover shadow-[0_2px_12px_rgba(31,36,48,0.12)]"
       />
 
-      <div className="flex flex-1 flex-col gap-4 p-5">
-        <h3 className="line-clamp-2 font-['Libre_Baskerville'] text-[15px] font-normal leading-relaxed tracking-wide text-stone-800">
-          {title}
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col font-book">
+        <h3
+          className="mb-2 shrink-0 text-xl text-[#1f2430]"
+          onClick={() => navigate(`/books/${book.id}`)}
+        >
+          {book.book_name}
         </h3>
 
-        <div className="mt-auto flex gap-2">
+        <div className="min-h-0 flex-1 overflow-hidden">
+          <p className="line-clamp-7 text-[0.95rem] leading-relaxed text-[#6b7280]">
+            {book.annotation}
+          </p>
+        </div>
+
+        <div className="mt-auto flex shrink-0 flex-wrap gap-2.5">
           <button
             type="button"
-            onClick={onBuy}
-            className="flex-1 cursor-pointer rounded-md bg-amber-800 px-3 py-2 text-[11px] font-medium uppercase tracking-widest text-white hover:bg-amber-700"
+            onClick={(event) => event.stopPropagation()}
+            className="cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 py-2 text-[0.9rem] text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
           >
-            Buy
+            About
           </button>
           <button
             type="button"
-            onClick={onSample}
-            className="flex-1 cursor-pointer rounded-md border border-stone-300 px-3 py-2 text-[11px] font-medium uppercase tracking-widest text-stone-600 hover:bg-stone-100"
+            onClick={(event) => {
+              event.stopPropagation();
+              navigate(`/books/${book.id}/fragment`);
+            }}
+            className="cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 py-2 text-[0.9rem] text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
           >
             Sample
           </button>
+          <button
+            type="button"
+            onClick={(event) => event.stopPropagation()}
+            className="cursor-pointer rounded-md border border-[#b3541e] bg-[#b3541e] px-4 py-2 text-[0.9rem] text-white transition-colors hover:border-[#8f3f12] hover:bg-[#8f3f12]"
+          >
+            Buy
+          </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
+
+export default BookCard;

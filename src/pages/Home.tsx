@@ -36,10 +36,10 @@ function Home() {
       ></Banner>
       {books.length > 0 && (
         <>
-          <CardsSection books={books}></CardsSection>
-          <Gallery></Gallery>
+          <CardsSection books={books} order={1}></CardsSection>
         </>
       )}
+      <Gallery order={2}></Gallery>
     </>
   );
 }

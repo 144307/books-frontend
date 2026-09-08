@@ -16,9 +16,10 @@ const DEFAULT_IMAGES = [
 interface GalleryProps {
   images?: string[];
   initialFocus?: number;
+  order?: number;
 }
 
-function Gallery({ images = DEFAULT_IMAGES, initialFocus }: GalleryProps) {
+function Gallery({ images = DEFAULT_IMAGES, initialFocus, order = 1 }: GalleryProps) {
   const [focusIndex, setFocusIndex] = useState(() =>
     Math.min(
       Math.max(initialFocus ?? Math.floor(images.length / 2), 0),
@@ -34,8 +35,12 @@ function Gallery({ images = DEFAULT_IMAGES, initialFocus }: GalleryProps) {
     focusIndex < images.length - 1 ? images[focusIndex + 1] : null;
 
   return (
-    <section className="w-full flex items-center justify-around">
-      <div className="w-content gap-4 flex align-middle items-center">
+    <section
+      className={`w-full flex items-center justify-around ${
+        order % 2 === 1 ? "bg-[#f7f4ee]" : "bg-[#f4ecd8]"
+      }`}
+    >
+      <div className="flex items-center gap-4">
         <button
           type="button"
           onClick={() => setFocusIndex((i) => i - 1)}
@@ -44,7 +49,7 @@ function Gallery({ images = DEFAULT_IMAGES, initialFocus }: GalleryProps) {
         >
           L
         </button>
-        <div className="mx-auto flex w-[54rem] max-w-full items-center justify-center gap-8 py-16">
+        <div className="page-width flex items-center justify-center gap-8 px-6 py-16">
           {prevImage ? (
             <img
               key={`prev-${focusIndex}`}

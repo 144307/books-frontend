@@ -13,7 +13,7 @@ function Banner({ title, subtitle, imageUrl = bannerImage }: BannerProps) {
       style={{ backgroundImage: `url(${imageUrl})` }}
     >
       {title && (
-        <div className="mx-auto w-300 max-w-full px-6 font-serif">
+        <div className="page-width px-6 font-serif">
           <h1 className="text-6xl font-bold tracking-tight text-stone-800">
             {title}
           </h1>

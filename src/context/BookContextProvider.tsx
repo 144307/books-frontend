@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import type { BookContextState, ClientBook } from "../types";
+import type { BookContextState, Character, ClientBook } from "../types";
 import BookContext from "./BookContext";
 
 function BookContextProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<BookContextState>({
     books: [],
+    characters: [],
     isLoading: true,
     error: null,
   });
@@ -27,13 +28,21 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
         console.log("data", data);
         setState({
           books: (data as { books: ClientBook[] }).books,
+          characters: Array.isArray((data as { characters?: unknown }).characters)
+            ? (data as { characters: Character[] }).characters
+            : [],
           isLoading: false,
           error: null,
         });
       })
       .catch((e) => {
         console.error(e.message);
-        setState({ books: [], isLoading: false, error: e.message });
+        setState({
+          books: [],
+          characters: [],
+          isLoading: false,
+          error: e.message,
+        });
       });
   }, []);
 
