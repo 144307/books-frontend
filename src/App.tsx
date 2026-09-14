@@ -3,11 +3,13 @@ import Home from "./pages/Home";
 import Fragment from "./pages/Fragment";
 import NotFound from "./pages/NotFound";
 import BookPage from "./pages/BookPage";
+import NowInWorks from "./pages/NowInWorks";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/now-in-works" element={<NowInWorks />} />
       <Route
         path="/books/:bookID/fragment/:fragmentID?"
         element={<Fragment />}

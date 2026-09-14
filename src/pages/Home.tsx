@@ -36,7 +36,10 @@ function Home() {
       ></Banner>
       {books.length > 0 && (
         <>
-          <CardsSection books={books} order={1}></CardsSection>
+          <CardsSection
+            books={books.filter((b) => !b.in_works)}
+            order={1}
+          ></CardsSection>
         </>
       )}
       <Gallery order={2}></Gallery>

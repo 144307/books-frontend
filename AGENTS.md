@@ -77,7 +77,7 @@ Fragment page resolves chapters locally (no per-chapter fetch). Backend rows car
   border-stone-400 bg-stone-700 ... enabled:hover:bg-stone-600 disabled:cursor-not-allowed
   disabled:opacity-40` + `type="button"` always.
 - Layout constants: universal page width via the `page-width` utility defined in
-  `src/index.css` (54rem, centered, max-w-full); pair with `px-6` for gutters.
+  `src/index.css` (81rem, centered, max-w-full); pair with `px-6` for gutters.
   Sepia page background `bg-[#f4ecd8]`.
 
 ### Error handling

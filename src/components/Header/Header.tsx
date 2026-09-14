@@ -8,9 +8,9 @@ function Header() {
         <Link to="/" className="text-black hover:text-stone-600">
           Books
         </Link>
-        <a href="#" className="text-black hover:text-stone-600">
+        <Link to="/now-in-works" className="text-black hover:text-stone-600">
           Now in progress
-        </a>
+        </Link>
       </nav>
     </header>
   );

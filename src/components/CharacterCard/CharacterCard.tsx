@@ -14,7 +14,7 @@ function CharacterCard({ character }: CharacterCardProps) {
       />
       <div className="flex flex-1 flex-col font-book">
         <h3 className="mb-2 text-xl text-[#1f2430]">{character.name}</h3>
-        <p className="flex-1 text-[0.95rem] leading-relaxed text-[#6b7280]">
+        <p className="flex-1 text-[18px] leading-relaxed text-[#6b7280]">
           {character.description}
         </p>
       </div>

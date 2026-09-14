@@ -5,6 +5,7 @@ export interface ClientBook {
   short_annotation: string;
   image_ids: number[];
   is_featured: boolean;
+  in_works: boolean;
   cover: string;
   section_cover: string;
   cover_url: string;

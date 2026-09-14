@@ -54,7 +54,7 @@ function BookPage() {
           />
           <div className="flex min-w-[16rem] flex-1 flex-col">
             <h1 className="mb-4 text-3xl text-[#1f2430]">{book.book_name}</h1>
-            <p className="mb-6 flex-1 text-[0.95rem] leading-relaxed text-[#6b7280]">
+            <p className="mb-6 flex-1 text-[18px] leading-relaxed text-[#6b7280]">
               {book.annotation}
             </p>
             <div className="flex flex-wrap gap-2.5">

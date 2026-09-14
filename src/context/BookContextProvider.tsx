@@ -27,7 +27,11 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
         }
         console.log("data", data);
         setState({
-          books: (data as { books: ClientBook[] }).books,
+          books: (data as { books: ClientBook[] }).books.map((book) => ({
+            ...book,
+            in_works:
+              (book as { in_works?: unknown }).in_works === true,
+          })),
           characters: Array.isArray((data as { characters?: unknown }).characters)
             ? (data as { characters: Character[] }).characters
             : [],
