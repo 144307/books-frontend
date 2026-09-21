@@ -1,20 +1,14 @@
 interface DisplayCardProps {
   title: string;
   coverUrl: string;
-  onBuy?: () => void;
   onSample?: () => void;
 }
 
-export default function DisplayCard({
-  title,
-  coverUrl,
-  onBuy,
-  onSample,
-}: DisplayCardProps) {
+function DisplayCard({ title, coverUrl, onSample }: DisplayCardProps) {
   return (
     <div className="flex w-80 flex-col overflow-hidden rounded-xl border border-stone-300 bg-[#faf8f5] shadow-lg scale-90">
       {coverUrl ? (
-        <img src={coverUrl} alt={`missing image for ${title}`} />
+        <img src={coverUrl} alt={`Cover of ${title}`} />
       ) : (
         <div>error</div>
       )}
@@ -25,22 +19,23 @@ export default function DisplayCard({
         </h3>
 
         <div className="mt-auto flex gap-3">
-          <button
-            type="button"
-            onClick={onBuy}
-            className="flex-1 cursor-pointer rounded-lg bg-amber-800 px-5 py-3 text-sm font-medium uppercase tracking-widest text-white hover:bg-amber-700"
+          <a
+            href="#"
+            className="flex-1 cursor-pointer rounded-lg bg-[#e6ac8e] px-5 py-3 text-center text-sm font-medium uppercase tracking-widest text-[#1f2430] hover:bg-[#d18a63]"
           >
-            Buy
-          </button>
+            Купить
+          </a>
           <button
             type="button"
             onClick={onSample}
-            className="flex-1 cursor-pointer rounded-lg border border-stone-300 px-5 py-3 text-sm font-medium uppercase tracking-widest text-stone-600 hover:bg-stone-100"
+            className="flex-1 cursor-pointer rounded-lg border border-[#1f2430] px-5 pt-[0.8125rem] pb-3 text-sm font-medium uppercase tracking-widest text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
           >
-            Sample
+            Отрывок
           </button>
         </div>
       </div>
     </div>
   );
 }
+
+export default DisplayCard;

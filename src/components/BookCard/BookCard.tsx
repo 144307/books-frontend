@@ -1,65 +1,72 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { ClientBook } from "../../types";
 
 interface BookCardProps {
   book: ClientBook;
   variant?: "full" | "sample";
+  bg?: string;
 }
 
-function BookCard({ book, variant = "full" }: BookCardProps) {
+function BookCard({
+  book,
+  variant = "full",
+  bg = "bg-[#faf7f0]",
+}: BookCardProps) {
   const navigate = useNavigate();
 
   return (
-    <article className="flex h-100 w-full cursor-pointer items-stretch gap-5">
-      <img
-        src={book.cover_url}
-        alt={`Cover of ${book.book_name}`}
-        className="h-full w-65 shrink-0 rounded-sm object-cover shadow-[0_2px_12px_rgba(31,36,48,0.12)]"
-      />
+    <article className={`w-full py-6 ${bg}`}>
+      <div className="page-width px-6">
+        <div className="flex h-auto w-full flex-col items-stretch gap-10 sm:h-100 sm:flex-row">
+          <img
+            src={book.cover_url}
+            alt={`Cover of ${book.book_name}`}
+            className="h-auto w-full rounded-sm object-cover shadow-[0_2px_12px_rgba(31,36,48,0.12)] sm:h-full sm:w-65 sm:shrink-0"
+          />
 
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col font-book">
-        <h3
-          className="pb-6 shrink-0 text-4xl font-bold font-sans text-[#1f2430]"
-          onClick={() => navigate(`/books/${book.id}`)}
-        >
-          {book.book_name}
-        </h3>
+          <div className="flex flex-col min-h-0 min-w-0 flex-1 font-book">
+            <h3 className="pb-6 shrink-0 text-4xl font-bold font-book text-[#1f2430]">
+              <Link
+                to={`/books/${book.id}`}
+                className="transition-colors hover:text-[#d18a63]"
+              >
+                {book.book_name}
+              </Link>
+            </h3>
 
-        <div className="min-h-0 flex-1 overflow-hidden">
-          <p className="h-full wrap-break-word text-[18px] leading-relaxed text-[#6b7280] overflow-hidden line-clamp-2 text-ellipsis">
-            {book.annotation}
-          </p>
-        </div>
-
-        <div className="ml-auto pt-6 flex shrink-0 flex-wrap gap-2.5">
-          {variant === "full" && (
+            {/* <div className="max-h-40 min-h-0 overflow-hidden [mask-image:linear-gradient(to_bottom,black_calc(100%_-_3rem),transparent)] sm:max-h-none sm:flex-1"> */}
+            <div className="max-h-40 min-h-0 overflow-auto sm:max-h-none sm:flex-1">
+              <p className="wrap-break-word text-[18px] leading-relaxed text-[#6b7280]">
+                {book.annotation}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col justify-evenly ml-auto shrink-0 flex-wrap gap-2.5 pt-6">
+            {variant === "full" && (
+              <button
+                type="button"
+                onClick={() => navigate(`/books/${book.id}`)}
+                className="flex justify-center cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 pt-[0.5625rem] pb-2 text-[0.9rem] font-medium uppercase tracking-widest text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
+              >
+                О книге
+              </button>
+            )}
             <button
               type="button"
-              onClick={(event) => event.stopPropagation()}
-              className="cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 py-2 text-[0.9rem] text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
+              onClick={() => navigate(`/books/${book.id}/fragment`)}
+              className="flex justify-center cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 pt-[0.5625rem] pb-2 text-[0.9rem] font-medium uppercase tracking-widest text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
             >
-              About
+              Отрывок
             </button>
-          )}
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              navigate(`/books/${book.id}/fragment`);
-            }}
-            className="cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 py-2 text-[0.9rem] text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
-          >
-            Sample
-          </button>
-          {variant === "full" && (
-            <button
-              type="button"
-              onClick={(event) => event.stopPropagation()}
-              className="cursor-pointer rounded-md border border-[#b3541e] bg-[#b3541e] px-4 py-2 text-[0.9rem] text-white transition-colors hover:border-[#8f3f12] hover:bg-[#8f3f12]"
-            >
-              Buy
-            </button>
-          )}
+            {variant === "full" && (
+              <a
+                href="#"
+                className="flex justify-center cursor-pointer rounded-md border border-[#e6ac8e] bg-[#e6ac8e] px-4 pt-[0.5625rem] pb-2 text-[0.9rem] font-medium uppercase tracking-widest text-[#1f2430] transition-colors hover:border-[#d18a63] hover:bg-[#d18a63]"
+              >
+                Купить
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </article>

@@ -16,7 +16,7 @@ function Cover({ book, hasTopWave = false, hasNext = false }: CoverProps) {
       className={`relative flex place-content-center place-items-center bg-center bg-no-repeat bg-black text-white bg-cover${hasTopWave ? (hasNext ? " h-[112vh] wave-top mt-[-12vh]" : " h-screen wave-top mt-[-12vh]") : " h-screen"}`}
       style={{ backgroundImage: `url(${book.section_cover_url})` }}
     >
-      <div className="flex gap-auto gap-1 place-content-between max-w-6xl w-full p-4">
+      <div className="flex gap-1 place-content-between max-w-6xl w-full p-4">
         <div className="flex max-w-xl flex-col gap-6 place-content-center">
           <h2 className="text-xl italic font-light text-stone-300">
             A journey through the forgotten pages of history
@@ -34,7 +34,6 @@ function Cover({ book, hasTopWave = false, hasNext = false }: CoverProps) {
         <DisplayCard
           title={book.book_name}
           coverUrl={book.cover_url}
-          onBuy={() => {}}
           onSample={() => navigate(`/books/${book.id}/fragment`)}
         ></DisplayCard>
       </div>

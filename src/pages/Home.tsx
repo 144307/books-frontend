@@ -1,6 +1,7 @@
 import useBookContext from "../context/useBookContext";
 import Banner from "../components/Banner/Banner";
 import CardsSection from "../components/CardsSection/CardsSection";
+import Footer from "../components/Footer/Footer";
 import Gallery from "../components/Gallery/Gallery";
 import Header from "../components/Header/Header";
 
@@ -12,7 +13,7 @@ function Home() {
       <div className="min-h-screen bg-[#f4ecd8]">
         <Header />
         <div className="mx-auto max-w-2xl px-6 py-16 text-center text-stone-600">
-          Loading…
+          Загрузка…
         </div>
       </div>
     );
@@ -28,22 +29,21 @@ function Home() {
     );
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col bg-[#f4ecd8]">
       <Header></Header>
       <Banner
         title="Имя автора"
         subtitle="A journey through the forgotten pages of history"
       ></Banner>
-      {books.length > 0 && (
-        <>
-          <CardsSection
-            books={books.filter((b) => !b.in_works)}
-            order={1}
-          ></CardsSection>
-        </>
+      {books.some((b) => !b.in_works) && (
+        <CardsSection
+          books={books.filter((b) => !b.in_works)}
+          order={1}
+        ></CardsSection>
       )}
       <Gallery order={2}></Gallery>
-    </>
+      <Footer />
+    </div>
   );
 }
 

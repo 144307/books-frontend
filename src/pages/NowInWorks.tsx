@@ -1,12 +1,13 @@
 import useBookContext from "../context/useBookContext";
 import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 import CardsSection from "../components/CardsSection/CardsSection";
 
 function NowInWorks() {
   const { books, isLoading, error } = useBookContext();
 
   return (
-    <div className="min-h-screen bg-[#f4ecd8]">
+    <div className="flex min-h-screen flex-col bg-[#f4ecd8]">
       <Header />
       {isLoading && (
         <div className="page-width px-6 py-16 text-center text-stone-600">
@@ -34,6 +35,7 @@ function NowInWorks() {
           )}
         </>
       )}
+      <Footer />
     </div>
   );
 }

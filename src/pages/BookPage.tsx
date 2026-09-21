@@ -1,8 +1,10 @@
 import { useNavigate, useParams } from "react-router";
 import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 import Gallery from "../components/Gallery/Gallery";
 import CharactersSection from "../components/CharactersSection/CharactersSection";
 import useBookContext from "../context/useBookContext";
+import { useLayoutEffect } from "react";
 
 function BookPage() {
   const navigate = useNavigate();
@@ -11,6 +13,10 @@ function BookPage() {
   const context = useBookContext();
 
   const book = context.books.find((b) => b.id === bookID);
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (context.isLoading)
     return (
@@ -43,7 +49,7 @@ function BookPage() {
     );
 
   return (
-    <div className="min-h-screen bg-[#f4ecd8]">
+    <div className="flex min-h-screen flex-col bg-[#f4ecd8]">
       <Header />
       <section className="bg-[#f7f4ee] pt-20 pb-12 font-book">
         <div className="page-width flex flex-wrap items-start justify-center gap-10 px-6">
@@ -53,43 +59,36 @@ function BookPage() {
             className="w-[320px] self-start rounded-[4px] object-cover shadow-[0_2px_12px_rgba(31,36,48,0.12)]"
           />
           <div className="flex min-w-[16rem] flex-1 flex-col">
-            <h1 className="mb-4 text-3xl text-[#1f2430]">{book.book_name}</h1>
+            <h1 className="mb-4 text-3xl font-bold font-book text-[#1f2430]">{book.book_name}</h1>
             <p className="mb-6 flex-1 text-[18px] leading-relaxed text-[#6b7280]">
               {book.annotation}
             </p>
-            <div className="flex flex-wrap gap-2.5">
-              <button
-                type="button"
-                onClick={() => {}}
-                className="cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 py-2 text-[0.9rem] text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
-              >
-                About
-              </button>
+            <div className="ml-auto flex flex-wrap gap-2.5">
               <button
                 type="button"
                 onClick={() => navigate(`/books/${book.id}/fragment`)}
-                className="cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 py-2 text-[0.9rem] text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
+                className="cursor-pointer rounded-md border border-[#1f2430] bg-transparent px-4 pt-[0.5625rem] pb-2 text-[0.9rem] font-medium uppercase tracking-widest text-[#1f2430] transition-colors hover:bg-[#1f2430] hover:text-[#f7f4ee]"
               >
-                Sample
+                Отрывок
               </button>
-              <button
-                type="button"
-                onClick={() => {}}
-                className="cursor-pointer rounded-md border border-[#b3541e] bg-[#b3541e] px-4 py-2 text-[0.9rem] text-white transition-colors hover:border-[#8f3f12] hover:bg-[#8f3f12]"
+              <a
+                href="#"
+                className="cursor-pointer rounded-md border border-[#e6ac8e] bg-[#e6ac8e] px-4 pt-[0.5625rem] pb-2 text-[0.9rem] font-medium uppercase tracking-widest text-[#1f2430] transition-colors hover:border-[#d18a63] hover:bg-[#d18a63]"
               >
-                Buy
-              </button>
+                Купить
+              </a>
             </div>
           </div>
         </div>
       </section>
-      <Gallery order={2}></Gallery>
       {context.characters.length > 0 && (
         <CharactersSection
           characters={context.characters}
           order={3}
         ></CharactersSection>
       )}
+      <Gallery order={2}></Gallery>
+      <Footer />
     </div>
   );
 }

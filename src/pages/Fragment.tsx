@@ -1,6 +1,8 @@
+import { useLayoutEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
 import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 import useBookContext from "../context/useBookContext";
 import type { ClientBook } from "../types";
 
@@ -30,9 +32,14 @@ function Fragment() {
   const context = useBookContext();
 
   const book = context.books.find((b) => b.id === bookID);
-  const chapter = getChapter(book, fragmentID);
-  const hasPrev = fragmentID > 1;
+  const validFragmentID = Number.isInteger(fragmentID) && fragmentID >= 1;
+  const chapter = validFragmentID ? getChapter(book, fragmentID) : null;
+  const hasPrev = validFragmentID && fragmentID > 1;
   const hasNext = getChapter(book, fragmentID + 1) !== null;
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [bookID, fragmentID]);
 
   if (context.isLoading)
     return (
@@ -54,7 +61,7 @@ function Fragment() {
       </div>
     );
 
-  if (!book || chapter === null)
+  if (!book)
     return (
       <div className="min-h-screen bg-[#f4ecd8]">
         <Header />
@@ -64,8 +71,18 @@ function Fragment() {
       </div>
     );
 
+  if (chapter === null)
+    return (
+      <div className="min-h-screen bg-[#f4ecd8]">
+        <Header />
+        <div className="mx-auto max-w-2xl px-6 py-16 text-center text-amber-900">
+          Fragment not found.
+        </div>
+      </div>
+    );
+
   return (
-    <div className="pt-10 min-h-screen bg-[#f4ecd8]">
+    <div className="flex min-h-screen flex-col bg-[#f4ecd8] pt-10">
       <Header />
       <div className="page-width flex justify-center gap-3 px-6 pt-8">
         <button
@@ -74,9 +91,9 @@ function Fragment() {
           onClick={() =>
             navigate(`/books/${bookID}/fragment/${fragmentID - 1}`)
           }
-          className="cursor-pointer rounded-lg border border-stone-400 bg-stone-700 px-5 py-3 text-sm font-medium uppercase tracking-widest text-stone-100 enabled:hover:bg-stone-600 disabled:cursor-not-allowed disabled:opacity-40"
+          className="cursor-pointer rounded-lg border border-[#1f2430] bg-transparent px-5 pt-[0.8125rem] pb-3 text-sm font-medium uppercase tracking-widest text-[#1f2430] transition-colors enabled:hover:bg-[#1f2430] enabled:hover:text-[#f7f4ee] disabled:cursor-not-allowed disabled:opacity-40"
         >
-          Previous Fragment
+          Назад
         </button>
         <button
           type="button"
@@ -84,9 +101,9 @@ function Fragment() {
           onClick={() =>
             navigate(`/books/${bookID}/fragment/${fragmentID + 1}`)
           }
-          className="cursor-pointer rounded-lg border border-stone-400 bg-stone-700 px-5 py-3 text-sm font-medium uppercase tracking-widest text-stone-100 enabled:hover:bg-stone-600 disabled:cursor-not-allowed disabled:opacity-40"
+          className="cursor-pointer rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-sm font-medium uppercase tracking-widest text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40"
         >
-          Next Fragment
+          Вперёд
         </button>
       </div>
       <article className="page-width px-6 py-16">
@@ -97,6 +114,7 @@ function Fragment() {
           <ReactMarkdown>{chapter}</ReactMarkdown>
         </div>
       </article>
+      <Footer />
     </div>
   );
 }
