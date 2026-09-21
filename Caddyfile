@@ -1,0 +1,10 @@
+{$SITE_ADDRESS::80}
+
+root * /srv/dist
+encode gzip
+
+try_files {path} /index.html
+file_server
+
+reverse_proxy /api/* {$API_UPSTREAM::api:8000}
+reverse_proxy /static/* {$API_UPSTREAM::api:8000}
