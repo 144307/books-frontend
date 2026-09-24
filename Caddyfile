@@ -3,6 +3,10 @@
 		reverse_proxy {$API_UPSTREAM::api:8000}
 	}
 
+	handle /admin* {
+		reverse_proxy {$API_UPSTREAM::api:8000}
+	}
+
 	handle /static/* {
 		reverse_proxy {$API_UPSTREAM::api:8000}
 	}
