@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import type { ClientBook } from "../../types";
 import DisplayCard from "../DisplayCard/DisplayCard";
+import sectionBg from "../../assets/section-bg.png";
 
 interface CoverProps {
   book: ClientBook;
@@ -14,7 +15,7 @@ function Cover({ book, hasTopWave = false, hasNext = false }: CoverProps) {
   return (
     <section
       className={`relative flex place-content-center place-items-center bg-center bg-no-repeat bg-black text-white bg-cover${hasTopWave ? (hasNext ? " h-[112vh] wave-top mt-[-12vh]" : " h-screen wave-top mt-[-12vh]") : " h-screen"}`}
-      style={{ backgroundImage: `url(${book.section_cover_url})` }}
+      style={{ backgroundImage: `url(${sectionBg})` }}
     >
       <div className="flex gap-1 place-content-between max-w-6xl w-full p-4">
         <div className="flex max-w-xl flex-col gap-6 place-content-center">

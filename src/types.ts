@@ -7,9 +7,7 @@ export interface ClientBook {
   is_featured: boolean;
   in_works: boolean;
   cover: string;
-  section_cover: string;
   cover_url: string;
-  section_cover_url: string;
   chapter_1: string | null;
   chapter_2: string | null;
   chapter_3: string | null;
