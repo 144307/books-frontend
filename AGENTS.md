@@ -3,16 +3,20 @@
 Guidance for AI coding agents working in this repository.
 
 ## Project Overview
-Book showcase storefront: React 19 + TypeScript + Vite 8 frontend consuming a
-JSON API (external Express + better-sqlite3 backend on localhost:8000).
+Book showcase storefront: fully static site (React 19 + TypeScript + Vite 8),
+deployable to any static host. Book/character data is frozen — no runtime
+backend; BookContextProvider fetches a committed JSON snapshot. The former
+Express + better-sqlite3 backend repo (books-server) is archived.
 React Router 7 for routing, Tailwind CSS 4 (via Vite plugin) for styling,
 react-markdown for rendering book chapters. Some UI copy and TODOs are in Russian.
 
 ## Commands
-- `npm run dev` — Vite dev server; proxies `/api` and `/static` to http://localhost:8000
+- `npm run dev` — Vite dev server (serves everything from `public/`, no proxy)
 - `npm run build` — type-check + production build (`tsc -b && vite build`)
 - `npm run lint` — ESLint (flat config, typescript-eslint + react-hooks + react-refresh)
 - `npm run preview` — serve built output
+- `npm run export-data` — regenerate `public/api/database.json` from
+  `data/database.sqlite` (only needed when the frozen content changes)
 
 There is NO test framework installed and no test script. Do not assume
 Jest/Vitest/etc. exists. "Running a single test" is not applicable. If tests
@@ -32,11 +36,18 @@ change is: `npm run lint && npm run build` — run both, they must pass.
 - `src/assets/` — imported assets (note: filenames contain spaces/Cyrillic)
 
 ### Data flow
-All books are fetched ONCE in BookContextProvider from `${VITE_API_BASE_URL ?? ""}/api/database`
-and live in context ({ books, isLoading, error }). Pages read from context; the
-Fragment page resolves chapters locally (no per-chapter fetch). Backend rows carry
-`chapter_1`..`chapter_5` columns (nullable) on the books table. Env var
-`VITE_API_BASE_URL` is optional (dev proxy handles routing).
+All books are fetched ONCE in BookContextProvider from `/api/database.json`
+(a static file in `public/api/`) and live in context
+({ books, characters, isLoading, error }). Pages read from context; the
+Fragment page resolves chapters locally (no per-chapter fetch). Book rows carry
+`chapter_1`..`chapter_5` fields (nullable) — markdown rendered by react-markdown.
+Images are served from `public/static/` (`/static/covers/...`,
+`/static/characters/...` — URLs come from the JSON, never rewrite them in code).
+Content edits: change `data/database.sqlite` (via sqlite client or the archived
+books-server admin tooling) then run `npm run export-data` and commit both.
+`scripts/export-database.ts` is NOT part of `tsc -b` (outside all tsconfigs)
+and runs via Node type-stripping (Node >= 22.12); `better-sqlite3` is a
+devDependency only — never import it in `src/`.
 
 ## Code Style
 
@@ -65,7 +76,7 @@ Fragment page resolves chapters locally (no per-chapter fetch). Backend rows car
 ### Naming
 - PascalCase components/types/interfaces, camelCase values/functions,
   snake_case ONLY for API-derived fields (`book_name`, `has_next`).
-- Env vars: `VITE_API_BASE_URL` (access via `import.meta.env`).
+- No runtime env vars; the app is fully static.
 
 ### Styling (Tailwind 4, no config file)
 - Utility classes inline; no CSS modules; global CSS only in `src/index.css`
@@ -85,7 +96,7 @@ Fragment page resolves chapters locally (no per-chapter fetch). Backend rows car
   descriptive Errors ("Bad response shape", `HTTP ${res.status}`).
 - Errors land in state and render the sepia error UI (Header + amber-toned
   message), never alert()/console-only.
-- Defensive defaults at boundaries: `?? ""` for env, `?? "-1"` / `?? "1"` for
+- Defensive defaults at boundaries: `?? "-1"` / `?? "1"` for
   params, strict coercion (`=== true`) for optional booleans from the API.
 
 ### React conventions
@@ -98,7 +109,5 @@ Fragment page resolves chapters locally (no per-chapter fetch). Backend rows car
 - `tsc -b` enforces `noUnusedLocals` / `noUnusedParameters` — delete dead code.
 - `erasableSyntaxOnly` — no enums/namespaces/parameter properties.
 - StrictMode double-invokes effects in dev; keep effects idempotent.
-- Backend is a separate repo (localhost:8000). Frontend cannot fix API contracts;
-  flag backend changes to the user instead of mocking around them.
 - TODO.txt (Russian) tracks pending work; consult it before large refactors.
 - Windows environment: quote asset paths containing spaces/Cyrillic characters.

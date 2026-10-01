@@ -1,73 +1,40 @@
-# React + TypeScript + Vite
+# Books
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Static book showcase site: React 19 + TypeScript + Vite 8, Tailwind CSS 4,
+React Router 7, react-markdown for chapters. No runtime backend — all content
+is frozen data served as static files, deployable to any static host.
 
-Currently, two official plugins are available:
+## Commands
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `npm run dev` — dev server (serves everything from `public/`)
+- `npm run build` — type-check + production build (`tsc -b && vite build`)
+- `npm run lint` — ESLint
+- `npm run preview` — serve the built `dist/` locally
+- `npm run export-data` — regenerate `public/api/database.json` from `data/database.sqlite`
 
-## React Compiler
+## Content workflow
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+`data/database.sqlite` is the source of truth. After changing it (sqlite
+client only — the admin tooling lives in the archived books-server repo):
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+npm run export-data
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+then commit both `data/database.sqlite` and `public/api/database.json`.
+Images live in `public/static/covers/` and `public/static/characters/`; the
+JSON references them by absolute URL (`/static/...`), so never rename them
+in code. The export script runs on Node >= 22.12 via type-stripping;
+`better-sqlite3` is a devDependency used only by the script, never in `src/`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Deployment
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Any static host that serves from the domain root:
+
+- Build command: `npm run build`
+- Output directory: `dist`
+
+`public/_redirects` (`/* /index.html 200`) provides the SPA fallback on
+Netlify and Cloudflare Pages. On Vercel, add an equivalent rewrite via
+`vercel.json`. Subpath hosting (e.g. GitHub Pages project sites) is not
+supported — asset and data URLs are root-relative.

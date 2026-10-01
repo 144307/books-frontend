@@ -11,8 +11,7 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    const API = import.meta.env.VITE_API_BASE_URL ?? "";
-    fetch(`${API}/api/database`)
+    fetch("/api/database.json")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -25,7 +24,6 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
         ) {
           throw new Error("Bad response shape");
         }
-        console.log("data", data);
         setState({
           books: (data as { books: ClientBook[] }).books.map((book) => ({
             ...book,
