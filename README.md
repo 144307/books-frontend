@@ -36,10 +36,12 @@ Any static host that serves from the domain root:
 **GitHub Pages**: `.github/workflows/deploy.yml` builds and deploys on every
 push to `main`. Enable it once in repo Settings → Pages → Source: GitHub
 Actions; the site is served at `https://<user>.github.io/books-frontend/`.
-The workflow sets `GITHUB_PAGES=true`, which makes Vite build with the
-`/books-frontend/` base prefix, and copies `index.html` to `404.html` so
-deep links work (GitHub Pages has no SPA fallback). Local builds and any
-other host keep root-relative URLs — nothing to change when migrating.
+`actions/configure-pages` passes the base path (`/books-frontend/` for this
+repo, `/` for a user-site repo or custom domain) to Vite via `VITE_BASE`,
+and `BrowserRouter` picks it up from `import.meta.env.BASE_URL` — no manual
+changes needed when the URL changes. The workflow also copies `index.html`
+to `404.html` so deep links work (GitHub Pages has no SPA fallback). Local
+builds and any other host keep root-relative URLs.
 
 `public/_redirects` (`/* /index.html 200`) provides the SPA fallback on
 Netlify and Cloudflare Pages. On Vercel, add an equivalent rewrite via

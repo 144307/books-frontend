@@ -11,7 +11,7 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <BookContextProvider>
         <ScrollToTop />
         <App />
