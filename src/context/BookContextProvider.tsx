@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { BookContextState, Character, ClientBook } from "../types";
+import { withBase } from "../utils/url";
 import BookContext from "./BookContext";
 
 function isClientBook(value: unknown): value is ClientBook {
@@ -37,7 +38,7 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    fetch("/api/database.json")
+    fetch(withBase("/api/database.json"))
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -50,10 +51,21 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
         ) {
           throw new Error("Bad response shape");
         }
-        const books = (data as { books: unknown[] }).books.filter(isClientBook);
+        const books = (data as { books: unknown[] }).books
+          .filter(isClientBook)
+          .map((book) => ({
+            ...book,
+            cover_url: withBase(book.cover_url),
+            gallery: book.gallery.map(withBase),
+          }));
         const rawCharacters = (data as { characters?: unknown }).characters;
         const characters = Array.isArray(rawCharacters)
-          ? rawCharacters.filter(isCharacter)
+          ? rawCharacters
+              .filter(isCharacter)
+              .map((character) => ({
+                ...character,
+                image_url: withBase(character.image_url),
+              }))
           : [];
         setState({
           books,

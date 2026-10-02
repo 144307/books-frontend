@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { withBase } from "../../utils/url";
 
 const DEFAULT_IMAGES = [
   "/static/gallery/claire.webp",
@@ -6,7 +7,7 @@ const DEFAULT_IMAGES = [
   "/static/gallery/hack-realities.webp",
   "/static/gallery/heroine.webp",
   "/static/gallery/detective.webp",
-];
+].map(withBase);
 
 interface GalleryProps {
   images?: string[];
