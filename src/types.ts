@@ -2,17 +2,12 @@ export interface ClientBook {
   id: number;
   book_name: string;
   annotation: string;
-  short_annotation: string;
-  image_ids: number[];
-  is_featured: boolean;
-  in_works: boolean;
-  cover: string;
   cover_url: string;
-  chapter_1: string | null;
-  chapter_2: string | null;
-  chapter_3: string | null;
-  chapter_4: string | null;
-  chapter_5: string | null;
+  purchase_url: string | null;
+  in_works: boolean;
+  chapters: string[];
+  character_ids: number[];
+  gallery: string[];
 }
 
 export interface Character {

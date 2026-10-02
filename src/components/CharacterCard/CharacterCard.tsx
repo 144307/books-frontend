@@ -9,7 +9,9 @@ function CharacterCard({ character }: CharacterCardProps) {
     <article className="flex w-full gap-5">
       <img
         src={character.image_url}
-        alt={`Portrait of ${character.name}`}
+        alt={`Портрет ${character.name}`}
+        loading="lazy"
+        decoding="async"
         className="h-auto w-1/2 self-start rounded-sm object-cover shadow-[0_2px_12px_rgba(31,36,48,0.12)]"
       />
       <div className="flex flex-1 flex-col font-book">

@@ -7,10 +7,9 @@ interface CardsSectionProps {
   books: ClientBook[];
   order: number;
   title?: string;
-  variant?: "full" | "sample";
 }
 
-function CardsSection({ books, order, variant }: CardsSectionProps) {
+function CardsSection({ books, order, title }: CardsSectionProps) {
   return (
     <section
       className={`font-book ${
@@ -18,14 +17,13 @@ function CardsSection({ books, order, variant }: CardsSectionProps) {
       }`}
     >
       <h2 className="mt-16 mb-6 text-center text-[1.6rem] text-[#1f2430]">
-        Книги
+        {title ?? "Книги"}
       </h2>
       <div className="flex flex-col items-stretch">
         {books.map((book, index) => (
           <BookCard
             key={book.id}
             book={book}
-            variant={variant}
             bg={CARD_BG[index % CARD_BG.length]}
           ></BookCard>
         ))}

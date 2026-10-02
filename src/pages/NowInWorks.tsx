@@ -1,42 +1,31 @@
-import useBookContext from "../context/useBookContext";
-import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
 import CardsSection from "../components/CardsSection/CardsSection";
+import Layout from "../components/Layout/Layout";
+import PageMessage from "../components/PageMessage/PageMessage";
+import useBookContext from "../context/useBookContext";
+import usePageTitle from "../hooks/usePageTitle";
 
 function NowInWorks() {
   const { books, isLoading, error } = useBookContext();
+  usePageTitle("На столе писателя");
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f4ecd8]">
-      <Header />
-      {isLoading && (
-        <div className="page-width px-6 py-16 text-center text-stone-600">
-          Loading…
-        </div>
-      )}
-      {error && (
-        <div className="page-width px-6 py-16 text-center text-amber-900">
-          Failed to load books. ({error})
-        </div>
-      )}
+    <Layout>
+      {isLoading && <PageMessage kind="loading" />}
+      {error && <PageMessage kind="error" text={error} />}
       {!isLoading && !error && (
         <>
           {books.some((b) => b.in_works) ? (
             <CardsSection
               books={books.filter((b) => b.in_works)}
               order={1}
-              title="Now in Works"
-              variant="sample"
-            ></CardsSection>
+              title="На столе писателя"
+            />
           ) : (
-            <div className="page-width px-6 py-16 text-center font-book text-[1.2rem] text-[#6b7280]">
-              Nothing in progress yet
-            </div>
+            <PageMessage kind="notice" text="Пока нет книг в работе." />
           )}
         </>
       )}
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 

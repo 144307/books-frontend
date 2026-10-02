@@ -2,6 +2,32 @@ import { useEffect, useState } from "react";
 import type { BookContextState, Character, ClientBook } from "../types";
 import BookContext from "./BookContext";
 
+function isClientBook(value: unknown): value is ClientBook {
+  if (typeof value !== "object" || value === null) return false;
+  const book = value as Record<string, unknown>;
+  return (
+    typeof book.id === "number" &&
+    typeof book.book_name === "string" &&
+    typeof book.annotation === "string" &&
+    typeof book.cover_url === "string" &&
+    Array.isArray(book.chapters) &&
+    Array.isArray(book.character_ids) &&
+    Array.isArray(book.gallery) &&
+    typeof book.in_works === "boolean"
+  );
+}
+
+function isCharacter(value: unknown): value is Character {
+  if (typeof value !== "object" || value === null) return false;
+  const character = value as Record<string, unknown>;
+  return (
+    typeof character.id === "number" &&
+    typeof character.name === "string" &&
+    typeof character.description === "string" &&
+    typeof character.image_url === "string"
+  );
+}
+
 function BookContextProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<BookContextState>({
     books: [],
@@ -24,15 +50,14 @@ function BookContextProvider({ children }: { children: React.ReactNode }) {
         ) {
           throw new Error("Bad response shape");
         }
+        const books = (data as { books: unknown[] }).books.filter(isClientBook);
+        const rawCharacters = (data as { characters?: unknown }).characters;
+        const characters = Array.isArray(rawCharacters)
+          ? rawCharacters.filter(isCharacter)
+          : [];
         setState({
-          books: (data as { books: ClientBook[] }).books.map((book) => ({
-            ...book,
-            in_works:
-              (book as { in_works?: unknown }).in_works === true,
-          })),
-          characters: Array.isArray((data as { characters?: unknown }).characters)
-            ? (data as { characters: Character[] }).characters
-            : [],
+          books,
+          characters,
           isLoading: false,
           error: null,
         });

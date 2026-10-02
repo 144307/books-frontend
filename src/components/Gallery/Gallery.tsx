@@ -1,30 +1,21 @@
 import { useState } from "react";
-import defaultImageClaire from "../../assets/gallery-claire.png";
-import defaultImageMechanicsOfLove from "../../assets/gallery-mechanics-of-love.jpg";
-import defaultImageHackRealities from "../../assets/gallery-hack-realities.png";
-import defaultImageHeroine from "../../assets/gallery-heroine.png";
-import defaultImageDetective from "../../assets/gallery-detective.png";
 
 const DEFAULT_IMAGES = [
-  defaultImageClaire,
-  defaultImageMechanicsOfLove,
-  defaultImageHackRealities,
-  defaultImageHeroine,
-  defaultImageDetective,
+  "/static/gallery/claire.webp",
+  "/static/gallery/mechanics-of-love.webp",
+  "/static/gallery/hack-realities.webp",
+  "/static/gallery/heroine.webp",
+  "/static/gallery/detective.webp",
 ];
 
 interface GalleryProps {
   images?: string[];
-  initialFocus?: number;
   order?: number;
 }
 
-function Gallery({ images = DEFAULT_IMAGES, initialFocus, order = 1 }: GalleryProps) {
+function Gallery({ images = DEFAULT_IMAGES, order = 1 }: GalleryProps) {
   const [focusIndex, setFocusIndex] = useState(() =>
-    Math.min(
-      Math.max(initialFocus ?? Math.floor(images.length / 2), 0),
-      images.length - 1,
-    ),
+    Math.min(Math.floor(images.length / 2), images.length - 1),
   );
 
   if (images.length === 0) return null;
@@ -33,66 +24,82 @@ function Gallery({ images = DEFAULT_IMAGES, initialFocus, order = 1 }: GalleryPr
   const focusImage = images[focusIndex];
   const nextImage =
     focusIndex < images.length - 1 ? images[focusIndex + 1] : null;
+  const hasPrev = focusIndex > 0;
+  const hasNext = focusIndex < images.length - 1;
+
+  const goToPrev = () => setFocusIndex((i) => Math.max(i - 1, 0));
+  const goToNext = () => setFocusIndex((i) => Math.min(i + 1, images.length - 1));
 
   return (
     <section
       className={`w-full flex items-center justify-center overflow-hidden ${
         order % 2 === 1 ? "bg-[#f7f4ee]" : "bg-[#f4ecd8]"
       }`}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowLeft" && hasPrev) goToPrev();
+        if (event.key === "ArrowRight" && hasNext) goToNext();
+      }}
     >
-      <div className="page-width flex min-w-0 items-center justify-center gap-4 px-6 pt-16 pb-8 lg:gap-8 lg:pt-24 lg:pb-16">
+      <div className="page-width flex min-w-0 flex-wrap items-center justify-center gap-4 px-6 pt-16 pb-8 lg:gap-8 lg:pt-24 lg:pb-16">
         <button
           type="button"
-          onClick={() => setFocusIndex((i) => i - 1)}
-          disabled={focusIndex === 0}
+          onClick={goToPrev}
+          disabled={!hasPrev}
+          aria-label="Предыдущая иллюстрация"
           className="cursor-pointer shrink-0 rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40"
         >
           ←
         </button>
         {prevImage ? (
-          <div
-            key={`prev-${focusIndex}`}
-            onClick={() => setFocusIndex((i) => i - 1)}
-            className="relative hidden h-72 aspect-[2/3] shrink-0 cursor-pointer rounded-xl border border-stone-300 shadow-lg lg:block"
+          <button
+            type="button"
+            onClick={goToPrev}
+            aria-label="Показать предыдущую иллюстрацию"
+            className="hidden aspect-[2/3] h-72 shrink-0 cursor-pointer overflow-hidden rounded-xl border border-stone-300 shadow-lg transition-opacity hover:opacity-80 lg:block"
           >
             <img
               src={prevImage}
-              alt=""
+              alt={`Иллюстрация ${focusIndex}`}
               decoding="async"
-              className="h-full w-full object-contain"
+              loading="lazy"
+              className="h-full w-full object-cover"
             />
-          </div>
+          </button>
         ) : (
-          <div className="hidden h-72 w-48 shrink-0 lg:block" aria-hidden />
+          <div className="hidden h-72 w-48 shrink-0 lg:block" aria-hidden="true" />
         )}
-        <div className="relative h-[30rem] max-w-full aspect-[2/3] rounded-xl border border-stone-300 shadow-lg">
+        <div className="relative aspect-[2/3] h-[30rem] max-w-full shrink-0 overflow-hidden rounded-xl border border-stone-300 shadow-lg">
           <img
             src={focusImage}
-            alt=""
+            alt={`Иллюстрация ${focusIndex + 1}`}
             decoding="async"
-            className="h-full w-full object-contain"
+            loading="lazy"
+            className="h-full w-full object-cover"
           />
         </div>
         {nextImage ? (
-          <div
-            key={`next-${focusIndex}`}
-            onClick={() => setFocusIndex((i) => i + 1)}
-            className="relative hidden h-72 aspect-[2/3] shrink-0 cursor-pointer rounded-xl border border-stone-300 shadow-lg lg:block"
+          <button
+            type="button"
+            onClick={goToNext}
+            aria-label="Показать следующую иллюстрацию"
+            className="hidden aspect-[2/3] h-72 shrink-0 cursor-pointer overflow-hidden rounded-xl border border-stone-300 shadow-lg transition-opacity hover:opacity-80 lg:block"
           >
             <img
               src={nextImage}
-              alt=""
+              alt={`Иллюстрация ${focusIndex + 2}`}
               decoding="async"
-              className="h-full w-full object-contain"
+              loading="lazy"
+              className="h-full w-full object-cover"
             />
-          </div>
+          </button>
         ) : (
-          <div className="hidden h-72 w-48 shrink-0 lg:block" aria-hidden />
+          <div className="hidden h-72 w-48 shrink-0 lg:block" aria-hidden="true" />
         )}
         <button
           type="button"
-          onClick={() => setFocusIndex((i) => i + 1)}
-          disabled={focusIndex === images.length - 1}
+          onClick={goToNext}
+          disabled={!hasNext}
+          aria-label="Следующая иллюстрация"
           className="cursor-pointer shrink-0 rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40"
         >
           →

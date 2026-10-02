@@ -4,14 +4,16 @@ import "@fontsource/libre-baskerville/400.css";
 import "@fontsource/libre-baskerville/400-italic.css";
 import "@fontsource/libre-baskerville/700.css";
 import "./index.css";
+import { BrowserRouter } from "react-router";
 import App from "./App.tsx";
 import BookContextProvider from "./context/BookContextProvider.tsx";
-import { BrowserRouter } from "react-router";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <BookContextProvider>
+        <ScrollToTop />
         <App />
       </BookContextProvider>
     </BrowserRouter>

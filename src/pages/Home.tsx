@@ -1,49 +1,43 @@
 import useBookContext from "../context/useBookContext";
+import usePageTitle from "../hooks/usePageTitle";
 import Banner from "../components/Banner/Banner";
 import CardsSection from "../components/CardsSection/CardsSection";
-import Footer from "../components/Footer/Footer";
 import Gallery from "../components/Gallery/Gallery";
-import Header from "../components/Header/Header";
+import Layout from "../components/Layout/Layout";
+import PageMessage from "../components/PageMessage/PageMessage";
 
 function Home() {
   const { books, isLoading, error } = useBookContext();
+  usePageTitle();
 
   if (isLoading)
     return (
-      <div className="min-h-screen bg-[#f4ecd8]">
-        <Header />
-        <div className="mx-auto max-w-2xl px-6 py-16 text-center text-stone-600">
-          Загрузка…
-        </div>
-      </div>
+      <Layout>
+        <PageMessage kind="loading" />
+      </Layout>
     );
 
   if (error)
     return (
-      <div className="min-h-screen bg-[#f4ecd8]">
-        <Header />
-        <div className="mx-auto max-w-2xl px-6 py-16 text-center text-amber-900">
-          Failed to load books. ({error})
-        </div>
-      </div>
+      <Layout>
+        <PageMessage kind="error" text={error} />
+      </Layout>
     );
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f4ecd8]">
-      <Header></Header>
+    <Layout>
       <Banner
-        title="Имя автора"
-        subtitle="A journey through the forgotten pages of history"
-      ></Banner>
+        title="Лидия Стрелкова Кошечкина"
+        subtitle="Путешествие по забытым страницам истории"
+      />
       {books.some((b) => !b.in_works) && (
         <CardsSection
           books={books.filter((b) => !b.in_works)}
           order={1}
-        ></CardsSection>
+        />
       )}
-      <Gallery order={2}></Gallery>
-      <Footer />
-    </div>
+      <Gallery order={2} />
+    </Layout>
   );
 }
 

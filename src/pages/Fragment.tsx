@@ -1,121 +1,115 @@
-import { useLayoutEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
-import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
+import Button from "../components/Button/Button";
+import Layout from "../components/Layout/Layout";
+import PageMessage from "../components/PageMessage/PageMessage";
 import useBookContext from "../context/useBookContext";
-import type { ClientBook } from "../types";
-
-function getChapter(book: ClientBook | undefined, n: number): string | null {
-  if (!book) return null;
-  switch (n) {
-    case 1:
-      return book.chapter_1;
-    case 2:
-      return book.chapter_2;
-    case 3:
-      return book.chapter_3;
-    case 4:
-      return book.chapter_4;
-    case 5:
-      return book.chapter_5;
-    default:
-      return null;
-  }
-}
+import usePageTitle from "../hooks/usePageTitle";
+import { resolveFragment } from "../utils/fragment";
 
 function Fragment() {
   const navigate = useNavigate();
   const { bookID: rawBookID, fragmentID: rawFragmentID } = useParams();
   const bookID = Number.parseInt(rawBookID ?? "-1");
   const fragmentID = Number.parseInt(rawFragmentID ?? "1");
-  const context = useBookContext();
+  const { books, isLoading, error } = useBookContext();
 
-  const book = context.books.find((b) => b.id === bookID);
-  const validFragmentID = Number.isInteger(fragmentID) && fragmentID >= 1;
-  const chapter = validFragmentID ? getChapter(book, fragmentID) : null;
-  const hasPrev = validFragmentID && fragmentID > 1;
-  const hasNext = getChapter(book, fragmentID + 1) !== null;
+  const book = books.find((b) => b.id === bookID);
+  const { chapter, hasPrev, hasNext } = resolveFragment(
+    book?.chapters ?? [],
+    fragmentID,
+  );
+  usePageTitle(
+    book && chapter !== null ? `${book.book_name} · глава ${fragmentID}` : undefined,
+  );
 
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-  }, [bookID, fragmentID]);
-
-  if (context.isLoading)
+  if (isLoading)
     return (
-      <div className="min-h-screen bg-[#f4ecd8]">
-        <Header />
-        <div className="mx-auto max-w-2xl px-6 py-16 text-center text-stone-600">
-          Loading…
-        </div>
-      </div>
+      <Layout>
+        <PageMessage kind="loading" />
+      </Layout>
     );
 
-  if (context.error)
+  if (error)
     return (
-      <div className="min-h-screen bg-[#f4ecd8]">
-        <Header />
-        <div className="mx-auto max-w-2xl px-6 py-16 text-center text-amber-900">
-          Failed to load books. ({context.error})
-        </div>
-      </div>
+      <Layout>
+        <PageMessage kind="error" text={error} />
+      </Layout>
     );
 
   if (!book)
     return (
-      <div className="min-h-screen bg-[#f4ecd8]">
-        <Header />
-        <div className="mx-auto max-w-2xl px-6 py-16 text-center text-amber-900">
-          Book not found.
-        </div>
-      </div>
+      <Layout>
+        <PageMessage kind="notice" text="Книга не найдена." />
+      </Layout>
     );
 
   if (chapter === null)
     return (
-      <div className="min-h-screen bg-[#f4ecd8]">
-        <Header />
-        <div className="mx-auto max-w-2xl px-6 py-16 text-center text-amber-900">
-          Fragment not found.
-        </div>
-      </div>
+      <Layout>
+        <PageMessage kind="notice" text="Глава не найдена." />
+      </Layout>
     );
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f4ecd8] pt-10">
-      <Header />
-      <div className="page-width flex justify-center gap-3 px-6 pt-8">
-        <button
-          type="button"
+    <Layout>
+      <div className="page-width flex flex-col items-center gap-3 px-6 pt-10">
+        <Button to={`/books/${bookID}`}>← К книге</Button>
+        <span className="text-sm font-medium uppercase tracking-[0.3em] text-amber-800">
+          Глава {fragmentID} из {book.chapters.length}
+        </span>
+      </div>
+      <div className="page-width flex justify-center gap-3 px-6 pt-6">
+        <Button
+          size="lg"
           disabled={!hasPrev}
           onClick={() =>
             navigate(`/books/${bookID}/fragment/${fragmentID - 1}`)
           }
-          className="cursor-pointer rounded-lg border border-[#1f2430] bg-transparent px-5 pt-[0.8125rem] pb-3 text-sm font-medium uppercase tracking-widest text-[#1f2430] transition-colors enabled:hover:bg-[#1f2430] enabled:hover:text-[#f7f4ee] disabled:cursor-not-allowed disabled:opacity-40"
         >
           Назад
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          size="lg"
+          variant="accent"
           disabled={!hasNext}
           onClick={() =>
             navigate(`/books/${bookID}/fragment/${fragmentID + 1}`)
           }
-          className="cursor-pointer rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-sm font-medium uppercase tracking-widest text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40"
         >
           Вперёд
-        </button>
+        </Button>
       </div>
-      <article className="page-width px-6 py-16">
-        <span className="block text-sm font-medium uppercase tracking-[0.3em] text-amber-800">
+      <article className="page-width px-6 py-10">
+        <span className="block text-center text-sm font-medium uppercase tracking-[0.3em] text-amber-800">
           {book.book_name}
         </span>
         <div className="prose prose-stone prose-p:my-4 prose-p:text-justify mt-8 max-w-none font-book text-lg leading-normal">
           <ReactMarkdown>{chapter}</ReactMarkdown>
         </div>
       </article>
-      <Footer />
-    </div>
+      <div className="page-width flex justify-center gap-3 px-6 pb-14">
+        <Button
+          size="lg"
+          disabled={!hasPrev}
+          onClick={() =>
+            navigate(`/books/${bookID}/fragment/${fragmentID - 1}`)
+          }
+        >
+          Назад
+        </Button>
+        <Button
+          size="lg"
+          variant="accent"
+          disabled={!hasNext}
+          onClick={() =>
+            navigate(`/books/${bookID}/fragment/${fragmentID + 1}`)
+          }
+        >
+          Вперёд
+        </Button>
+      </div>
+    </Layout>
   );
 }
 
