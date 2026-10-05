@@ -48,7 +48,7 @@ GitHub Actions (Node 22, lint + test + build) and uploads `dist` via
 setup: create an API token with the "Cloudflare Pages — Edit" template, then
 add repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`
 (Settings → Secrets and variables → Actions). The site is served at
-`https://books-frontend.pages.dev/`; the first workflow run creates the
+`https://books-frontend-144307.pages.dev/`; the first workflow run creates the
 project. `public/_redirects` provides the SPA fallback, so deep links get
 real 200 responses (no base-path handling needed — `VITE_BASE` stays unset).
 
