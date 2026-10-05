@@ -65,7 +65,7 @@ function BookCard({ book, bg = "bg-[#faf7f0]" }: BookCardProps) {
               </p>
             </div>
           </div>
-          <div className="ml-auto flex shrink-0 flex-wrap flex-col justify-evenly gap-2.5 pt-6">
+          <div className="flex w-full shrink-0 flex-row flex-wrap justify-center gap-2.5 sm:ml-auto sm:w-auto sm:flex-col sm:justify-evenly sm:pt-6">
             <Button to={`/books/${book.id}`}>О книге</Button>
             <Button to={`/books/${book.id}/fragment`}>Отрывок</Button>
             <Button variant="accent" href={book.purchase_url ?? "#"}>

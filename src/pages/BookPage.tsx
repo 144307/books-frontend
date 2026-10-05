@@ -50,7 +50,7 @@ function BookPage() {
           <img
             src={book.cover_url}
             alt={`Обложка книги «${book.book_name}»`}
-            className="aspect-[2/3] w-[320px] self-start rounded-[4px] object-cover shadow-[0_2px_12px_rgba(31,36,48,0.12)]"
+            className="aspect-[2/3] max-w-full w-[320px] self-start rounded-[4px] object-cover shadow-[0_2px_12px_rgba(31,36,48,0.12)]"
           />
           <div className="flex min-w-[16rem] flex-1 flex-col">
             <h1 className="mb-4 font-book text-3xl font-bold text-[#1f2430]">

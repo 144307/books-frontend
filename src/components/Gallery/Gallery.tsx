@@ -41,13 +41,13 @@ function Gallery({ images = DEFAULT_IMAGES, order = 1 }: GalleryProps) {
         if (event.key === "ArrowRight" && hasNext) goToNext();
       }}
     >
-      <div className="page-width flex min-w-0 flex-wrap items-center justify-center gap-4 px-6 pt-16 pb-8 lg:gap-8 lg:pt-24 lg:pb-16">
+      <div className="page-width grid grid-cols-2 items-center justify-items-center gap-4 px-6 pt-16 pb-8 lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-8 lg:pt-24 lg:pb-16">
         <button
           type="button"
           onClick={goToPrev}
           disabled={!hasPrev}
           aria-label="Предыдущая иллюстрация"
-          className="cursor-pointer shrink-0 rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40"
+          className="order-2 cursor-pointer justify-self-center rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40 lg:order-none"
         >
           ←
         </button>
@@ -69,7 +69,7 @@ function Gallery({ images = DEFAULT_IMAGES, order = 1 }: GalleryProps) {
         ) : (
           <div className="hidden h-72 w-48 shrink-0 lg:block" aria-hidden="true" />
         )}
-        <div className="relative aspect-[2/3] h-[30rem] max-w-full shrink-0 overflow-hidden rounded-xl border border-stone-300 shadow-lg">
+        <div className="relative order-1 col-span-2 aspect-[2/3] h-[26rem] max-w-full shrink-0 overflow-hidden rounded-xl border border-stone-300 shadow-lg sm:h-[30rem] lg:order-none">
           <img
             src={focusImage}
             alt={`Иллюстрация ${focusIndex + 1}`}
@@ -101,7 +101,7 @@ function Gallery({ images = DEFAULT_IMAGES, order = 1 }: GalleryProps) {
           onClick={goToNext}
           disabled={!hasNext}
           aria-label="Следующая иллюстрация"
-          className="cursor-pointer shrink-0 rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40"
+          className="order-3 cursor-pointer justify-self-center rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40 lg:order-none"
         >
           →
         </button>
