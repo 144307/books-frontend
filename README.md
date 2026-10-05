@@ -33,15 +33,6 @@ Any static host that serves from the domain root:
 - Build command: `npm run build`
 - Output directory: `dist`
 
-**GitHub Pages**: `.github/workflows/deploy.yml` builds and deploys on every
-push to `main`. Enable it once in repo Settings → Pages → Source: GitHub
-Actions; the site is served at `https://<user>.github.io/books-frontend/`.
-The workflow passes `VITE_BASE=/<repo-name>/` to Vite, and `BrowserRouter`
-normalizes `import.meta.env.BASE_URL` into its `basename` — no manual
-changes needed when the URL changes. The workflow also copies `index.html`
-to `404.html` so deep links work (GitHub Pages has no SPA fallback). Local
-builds and any other host keep root-relative URLs.
-
 **Cloudflare Pages**: `.github/workflows/deploy-cloudflare.yml` builds on
 GitHub Actions (Node 22, lint + test + build) and uploads `dist` via
 `wrangler pages deploy` — Cloudflare never builds anything itself. One-time
