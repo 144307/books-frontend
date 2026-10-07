@@ -47,7 +47,7 @@ function Gallery({ images = DEFAULT_IMAGES, order = 1 }: GalleryProps) {
           onClick={goToPrev}
           disabled={!hasPrev}
           aria-label="Предыдущая иллюстрация"
-          className="order-2 cursor-pointer justify-self-center rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40 lg:order-none"
+          className="order-2 cursor-pointer justify-self-center rounded-none border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40 lg:order-none"
         >
           ←
         </button>
@@ -101,7 +101,7 @@ function Gallery({ images = DEFAULT_IMAGES, order = 1 }: GalleryProps) {
           onClick={goToNext}
           disabled={!hasNext}
           aria-label="Следующая иллюстрация"
-          className="order-3 cursor-pointer justify-self-center rounded-lg border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40 lg:order-none"
+          className="order-3 cursor-pointer justify-self-center rounded-none border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40 lg:order-none"
         >
           →
         </button>
