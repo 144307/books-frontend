@@ -42,13 +42,13 @@ function renderFragment(initialUrl: string) {
 describe("Fragment", () => {
   it("renders the first chapter by default", () => {
     renderFragment("/books/1/fragment");
-    expect(screen.getByText("Глава 1 из 3")).toBeInTheDocument();
+    expect(screen.getByText("1 из 3")).toBeInTheDocument();
     expect(screen.getByText("Глава один")).toBeInTheDocument();
   });
 
   it("links back to the book page", () => {
     renderFragment("/books/1/fragment/2");
-    expect(screen.getByRole("link", { name: "← К книге" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "К книге" })).toHaveAttribute(
       "href",
       "/books/1",
     );
@@ -57,14 +57,14 @@ describe("Fragment", () => {
   it("navigates to the next chapter", () => {
     renderFragment("/books/1/fragment");
     fireEvent.click(screen.getAllByRole("button", { name: "Вперёд" })[0]);
-    expect(screen.getByText("Глава 2 из 3")).toBeInTheDocument();
+    expect(screen.getByText("2 из 3")).toBeInTheDocument();
     expect(screen.getByText("Глава два")).toBeInTheDocument();
   });
 
   it("navigates to the previous chapter", () => {
     renderFragment("/books/1/fragment/3");
     fireEvent.click(screen.getAllByRole("button", { name: "Назад" })[0]);
-    expect(screen.getByText("Глава 2 из 3")).toBeInTheDocument();
+    expect(screen.getByText("2 из 3")).toBeInTheDocument();
   });
 
   it("disables prev on the first chapter", () => {

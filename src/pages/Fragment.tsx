@@ -1,5 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
+import ArrowIcon from "../components/ArrowIcon/ArrowIcon";
+import BackIcon from "../components/BackIcon/BackIcon";
 import Button from "../components/Button/Button";
 import Layout from "../components/Layout/Layout";
 import PageMessage from "../components/PageMessage/PageMessage";
@@ -20,8 +22,15 @@ function Fragment() {
     fragmentID,
   );
   usePageTitle(
-    book && chapter !== null ? `${book.book_name} · глава ${fragmentID}` : undefined,
+    book && chapter !== null
+      ? `${book.book_name} · глава ${fragmentID}`
+      : undefined,
   );
+
+  const goToPrev = () =>
+    navigate(`/books/${bookID}/fragment/${fragmentID - 1}`);
+  const goToNext = () =>
+    navigate(`/books/${bookID}/fragment/${fragmentID + 1}`);
 
   if (isLoading)
     return (
@@ -53,34 +62,37 @@ function Fragment() {
 
   return (
     <Layout>
-      <div className="page-width flex flex-col items-center gap-3 px-6 pt-10">
-        <Button to={`/books/${bookID}`}>← К книге</Button>
-        <span className="text-sm font-medium uppercase tracking-[0.3em] text-amber-800">
-          Глава {fragmentID} из {book.chapters.length}
-        </span>
-      </div>
-      <div className="page-width flex justify-center gap-3 px-6 pt-6">
-        <Button
-          size="lg"
-          disabled={!hasPrev}
-          onClick={() =>
-            navigate(`/books/${bookID}/fragment/${fragmentID - 1}`)
-          }
-        >
-          Назад
+      <div className="relative mt-4 flex w-full items-center bg-[#efe4d1] pr-4 sm:mt-10">
+        <Button to={`/books/${bookID}`} size="md" aria-label="К книге">
+          <span className="flex items-center gap-2">
+            <BackIcon />
+            <span className="hidden sm:inline">К книге</span>
+          </span>
         </Button>
-        <Button
-          size="lg"
-          variant="accent"
-          disabled={!hasNext}
-          onClick={() =>
-            navigate(`/books/${bookID}/fragment/${fragmentID + 1}`)
-          }
-        >
-          Вперёд
-        </Button>
+        <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-2">
+          <Button size="md" disabled={!hasPrev} onClick={goToPrev}>
+            <span className="sm:hidden">
+              <ArrowIcon direction="left" />
+            </span>
+            <span className="hidden sm:inline">Назад</span>
+          </Button>
+          <span className="text-xs font-medium uppercase tracking-wide text-amber-800 sm:text-sm">
+            {fragmentID} из {book.chapters.length}
+          </span>
+          <Button
+            size="md"
+            variant="accent"
+            disabled={!hasNext}
+            onClick={goToNext}
+          >
+            <span className="sm:hidden">
+              <ArrowIcon direction="right" />
+            </span>
+            <span className="hidden sm:inline">Вперёд</span>
+          </Button>
+        </div>
       </div>
-      <article className="page-width px-6 py-10">
+      <article className="page-width px-6 pt-6 pb-10 sm:pt-10">
         <span className="block text-center text-sm font-medium uppercase tracking-[0.3em] text-amber-800">
           {book.book_name}
         </span>
@@ -89,24 +101,22 @@ function Fragment() {
         </div>
       </article>
       <div className="page-width flex justify-center gap-3 px-6 pb-14">
-        <Button
-          size="lg"
-          disabled={!hasPrev}
-          onClick={() =>
-            navigate(`/books/${bookID}/fragment/${fragmentID - 1}`)
-          }
-        >
-          Назад
+        <Button size="md" disabled={!hasPrev} onClick={goToPrev}>
+          <span className="sm:hidden">
+            <ArrowIcon direction="left" />
+          </span>
+          <span className="hidden sm:inline">Назад</span>
         </Button>
         <Button
-          size="lg"
+          size="md"
           variant="accent"
           disabled={!hasNext}
-          onClick={() =>
-            navigate(`/books/${bookID}/fragment/${fragmentID + 1}`)
-          }
+          onClick={goToNext}
         >
-          Вперёд
+          <span className="sm:hidden">
+            <ArrowIcon direction="right" />
+          </span>
+          <span className="hidden sm:inline">Вперёд</span>
         </Button>
       </div>
     </Layout>
