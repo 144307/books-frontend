@@ -47,7 +47,7 @@ function Header() {
           onClick={() => setIsMenuOpen((open) => !open)}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-nav"
-          className="cursor-pointer rounded-md border border-stone-300 px-3 py-1.5 text-sm text-[#1f2430] sm:hidden"
+          className="cursor-pointer rounded-md border border-stone-300 px-3 py-1.5 text-sm text-[#1f2430] transition-colors hover:border-[#d18a63] sm:hidden"
         >
           Меню
         </button>

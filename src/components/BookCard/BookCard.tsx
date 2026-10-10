@@ -8,6 +8,11 @@ interface BookCardProps {
   bg?: string;
 }
 
+function getHidden(el: HTMLElement) {
+  const content = el.firstElementChild as HTMLElement | null;
+  return (content ? content.scrollHeight : el.scrollHeight) - el.clientHeight;
+}
+
 function BookCard({ book, bg = "bg-[#faf7f0]" }: BookCardProps) {
   const [isClipped, setIsClipped] = useState(false);
   const [isAtBottom, setIsAtBottom] = useState(false);
@@ -17,13 +22,17 @@ function BookCard({ book, bg = "bg-[#faf7f0]" }: BookCardProps) {
     const el = textRef.current;
     if (!el) return;
     const measure = () => {
-      setIsClipped(el.scrollHeight - el.clientHeight > 1);
-      setIsAtBottom(el.scrollHeight - el.clientHeight - el.scrollTop <= 1);
+      const hidden = getHidden(el);
+      setIsClipped(hidden > 32);
+      setIsAtBottom(hidden - el.scrollTop <= 32);
     };
     measure();
+    document.fonts?.ready.then(measure);
     if (typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(measure);
     observer.observe(el);
+    const content = el.firstElementChild;
+    if (content) observer.observe(content);
     return () => observer.disconnect();
   }, []);
 
@@ -54,9 +63,9 @@ function BookCard({ book, bg = "bg-[#faf7f0]" }: BookCardProps) {
               ref={textRef}
               onScroll={(event) => {
                 const el = event.currentTarget;
-                setIsAtBottom(el.scrollHeight - el.clientHeight - el.scrollTop <= 1);
+                setIsAtBottom(getHidden(el) - el.scrollTop <= 32);
               }}
-              className={`max-h-40 min-h-0 overflow-auto sm:max-h-none sm:flex-1${
+              className={`max-h-40 min-h-0 flex-1 overflow-auto sm:max-h-none${
                 showFade ? " fade-mask" : ""
               }`}
             >

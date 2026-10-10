@@ -9,6 +9,7 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+  "aria-label"?: string;
   children: ReactNode;
 }
 
@@ -19,9 +20,9 @@ const SIZE_CLASSES = {
 
 const VARIANT_CLASSES = {
   outline:
-    "border border-amber-800 bg-transparent text-[#1f2430] enabled:hover:border-[#1f2430] enabled:hover:bg-[#1f2430] enabled:hover:text-[#f7f4ee]",
+    "border border-amber-800 bg-transparent text-[#1f2430] not-disabled:hover:bg-amber-800 not-disabled:hover:text-[#f7f4ee]",
   accent:
-    "border border-[#e6ac8e] bg-[#e6ac8e] text-[#1f2430] enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63]",
+    "border border-[#e6ac8e] bg-[#e6ac8e] text-[#1f2430] not-disabled:hover:border-[#d18a63] not-disabled:hover:bg-[#d18a63]",
 } as const;
 
 function Button({
@@ -32,26 +33,39 @@ function Button({
   onClick,
   disabled,
   className,
+  "aria-label": ariaLabel,
   children,
 }: ButtonProps) {
   const classes = `cursor-pointer text-center font-medium uppercase tracking-wide sm:tracking-widest transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${SIZE_CLASSES[size]} ${VARIANT_CLASSES[variant]}${className ? ` ${className}` : ""}`;
 
   if (to)
     return (
-      <Link to={to} className={classes}>
+      <Link to={to} aria-label={ariaLabel} className={classes}>
         {children}
       </Link>
     );
 
   if (href)
     return (
-      <a href={href} target="_blank" rel="noreferrer" className={classes}>
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={ariaLabel}
+        className={classes}
+      >
         {children}
       </a>
     );
 
   return (
-    <button type="button" onClick={onClick} disabled={disabled} className={classes}>
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      className={classes}
+    >
       {children}
     </button>
   );

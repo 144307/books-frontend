@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ArrowIcon from "../ArrowIcon/ArrowIcon";
+import Button from "../Button/Button";
 import { withBase } from "../../utils/url";
 
 const DEFAULT_IMAGES = [
@@ -42,15 +44,16 @@ function Gallery({ images = DEFAULT_IMAGES, order = 1 }: GalleryProps) {
       }}
     >
       <div className="page-width grid grid-cols-2 items-center justify-items-center gap-4 px-6 pt-16 pb-8 lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-8 lg:pt-24 lg:pb-16">
-        <button
-          type="button"
+        <Button
+          variant="accent"
+          size="lg"
           onClick={goToPrev}
           disabled={!hasPrev}
           aria-label="Предыдущая иллюстрация"
-          className="order-2 cursor-pointer justify-self-center rounded-none border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40 lg:order-none"
+          className="order-2 justify-self-center lg:order-none"
         >
-          ←
-        </button>
+          <ArrowIcon direction="left" />
+        </Button>
         {prevImage ? (
           <button
             type="button"
@@ -96,15 +99,16 @@ function Gallery({ images = DEFAULT_IMAGES, order = 1 }: GalleryProps) {
         ) : (
           <div className="hidden h-72 w-48 shrink-0 lg:block" aria-hidden="true" />
         )}
-        <button
-          type="button"
+        <Button
+          variant="accent"
+          size="lg"
           onClick={goToNext}
           disabled={!hasNext}
           aria-label="Следующая иллюстрация"
-          className="order-3 cursor-pointer justify-self-center rounded-none border border-[#e6ac8e] bg-[#e6ac8e] px-5 pt-[0.8125rem] pb-3 text-xl text-[#1f2430] transition-colors enabled:hover:border-[#d18a63] enabled:hover:bg-[#d18a63] disabled:cursor-not-allowed disabled:opacity-40 lg:order-none"
+          className="order-3 justify-self-center lg:order-none"
         >
-          →
-        </button>
+          <ArrowIcon direction="right" />
+        </Button>
       </div>
     </section>
   );
